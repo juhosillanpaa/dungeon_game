@@ -21,12 +21,14 @@ def main():
 
     clock = pygame.time.Clock()
     run = True
-    hero = Hero()
+    map = Map(game_surface=window, tile_size = 100)
+
+    hero = Hero(map=map)
     hero.set_position(300,300)
-    cockroach = Cockroach()
+    cockroach = Cockroach(map=map)
     cockroach.set_position(500,500)
 
-    map = Map(game_surface=window)
+
 
     game = Game(hero=hero, game_surface=window, map=map)
     game.add_roach(cockroach)
@@ -38,6 +40,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    print('pause')
+                    exit()
             game.listen_mouse_presses(event)
 
         game.run_iteration()

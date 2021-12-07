@@ -25,7 +25,7 @@ def get_image_matrix(width, height, path_list):
 
 
 class Cockroach(MovingUnit):
-    def __init__(self):
+    def __init__(self, map):
         walk_animation_frames = get_image_matrix(96, 96, walking_path_list)
         super().__init__(height=96,
                          width=96,
@@ -40,6 +40,7 @@ class Cockroach(MovingUnit):
                          death_animation_frame_duration=60,
                          norm_vector=(0, -1),
                          health=100,
+                         map=map
                          )
         self.target = None
         self.scanRadius = 500

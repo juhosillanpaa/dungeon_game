@@ -25,7 +25,7 @@ def test_perlin_map(size=50, tile_size = 128):
         row = []
         for y in range(size):
             point = pic[x][y]
-            if point > 0:
+            if -0.15 < point < 0.15:
                 row.append(FloorTile(x=x * tile_size, y=y * tile_size, size=tile_size))
             else:
                 row.append(WallTile(x=x * tile_size, y=y * tile_size, size=tile_size))

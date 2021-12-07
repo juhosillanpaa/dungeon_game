@@ -6,13 +6,16 @@ from ..HealthBar.HealthBar import HealthBar
 
 UPDATE_FRAME=20
 
+GREEN = (0, 255, 0)
 HEALTH_BAR_WIDTH = 60
+RADIUS = 15
 
 class MovingUnit:
     def __init__(self, height, width, velocity,norm_vector, health, image,
                  walk_animation_images, walk_animation_frame_duration,
                  attack_animation_images, attack_animation_frame_duration, attack_interval,
-                 death_animation_images, death_animation_frame_duration
+                 death_animation_images, death_animation_frame_duration,
+                 map
                  ):
         self.x = 0
         self.y = 0
@@ -40,6 +43,7 @@ class MovingUnit:
             frame_duration=attack_animation_frame_duration
         )
         self.health_bar = HealthBar(0, 0, health, HEALTH_BAR_WIDTH)
+        self.map = map
 
 
 
@@ -71,7 +75,9 @@ class MovingUnit:
         rotated_img = pygame.transform.rotate(image, self.rotation)
         x = self.x - rotated_img.get_width() // 2 - x_offset
         y = self.y - rotated_img.get_height() // 2 - y_offset
+        pygame.draw.circle(game_surface, GREEN, (self.x - x_offset, self.y-y_offset), RADIUS)
         game_surface.blit(rotated_img, (x, y))
+
 
     def update_facing_direction(self, x, y):
         new_dir = (x - self.x, y - self.y)
@@ -82,11 +88,17 @@ class MovingUnit:
         return self.x, self.y
 
     def set_position(self, x, y):
+        current_pos = (self.x, self.y)
+        movement_vec = (x - self.x, y - self.y)
+        legal_mov_vec = self.map.get_legal_movement_vec(current_pos, movement_vec, RADIUS)
+        x = self.x + legal_mov_vec[0]
+        y = self.y + legal_mov_vec[1]
         self.x = x
         self.y = y
         hp_x = self.x - HEALTH_BAR_WIDTH // 2
         hp_y = self.y - self.height // 2
         self.health_bar.update_position(hp_x, hp_y)
+
 
     def start_moving(self):
         self.moving = True

@@ -1,3 +1,4 @@
+import pygame
 
 
 class Game:
@@ -7,6 +8,12 @@ class Game:
         self.game_surface = game_surface
         self.map = map
 
+    def get_mouse_coordinates(self):
+        x, y = pygame.mouse.get_pos()
+        x_offset, y_offset = self.get_offset()
+        x = x + x_offset
+        y = y + y_offset
+        return x, y
 
     def add_roach(self, cockroach):
         self.roaches.append(cockroach)

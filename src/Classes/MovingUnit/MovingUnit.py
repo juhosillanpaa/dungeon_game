@@ -15,10 +15,10 @@ class MovingUnit:
                  walk_animation_images, walk_animation_frame_duration,
                  attack_animation_images, attack_animation_frame_duration, attack_interval,
                  death_animation_images, death_animation_frame_duration,
-                 map
+                 map, x=0, y=0
                  ):
-        self.x = 0
-        self.y = 0
+        self.x = x
+        self.y = y
         self.width = width
         self.height = height
         self.velocity = velocity
@@ -135,3 +135,5 @@ class MovingUnit:
             return True
         else:
             return False
+
+

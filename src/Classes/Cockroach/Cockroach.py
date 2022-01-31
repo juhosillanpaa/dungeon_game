@@ -25,29 +25,36 @@ def get_image_matrix(width, height, path_list):
 
 
 class Cockroach(MovingUnit):
-    def __init__(self, map):
+    def __init__(self, map, x=0, y=0):
         walk_animation_frames = get_image_matrix(96, 96, walking_path_list)
-        super().__init__(height=96,
-                         width=96,
-                         velocity=1,
-                         image=walk_animation_frames[0],
-                         walk_animation_images=walk_animation_frames,
-                         walk_animation_frame_duration=10,
-                         attack_animation_images=get_image_matrix(96, 96, attacking_path_list),
-                         attack_animation_frame_duration=20,
-                         attack_interval=60,
-                         death_animation_images=get_image_matrix(96,96,death_path_list),
-                         death_animation_frame_duration=60,
-                         norm_vector=(0, -1),
-                         health=100,
-                         map=map
-                         )
+        super().__init__(
+            x=x,
+            y=y,
+            height=96,
+            width=96,
+            velocity=1,
+            image=walk_animation_frames[0],
+            walk_animation_images=walk_animation_frames,
+            walk_animation_frame_duration=10,
+            attack_animation_images=get_image_matrix(96, 96, attacking_path_list),
+            attack_animation_frame_duration=20,
+            attack_interval=60,
+            death_animation_images=get_image_matrix(96,96,death_path_list),
+            death_animation_frame_duration=60,
+            norm_vector=(0, -1),
+            health=100,
+            map=map
+        )
         self.target = None
         self.scanRadius = 500
         self.attackRadius = 50
         self.hitbox_size = 20
         self.damage = 20
 
+
+    def print(self):
+        pass
+        #print((self.x, self.y))
 
     def scan_for_target(self, hero):
         x, y = hero.get_position()
@@ -90,6 +97,7 @@ class Cockroach(MovingUnit):
         return rect
 
 
+
     def check_if_hit_by_bullets(self, hero):
         bullets = hero.get_bullets()
         rect = self.get_hitbox_rect()
@@ -101,6 +109,7 @@ class Cockroach(MovingUnit):
 
 
     def run_iteration(self, hero):
+        self.print()
         if super().is_alive():
             self.check_if_hit_by_bullets(hero)
             self.scan_for_target(hero)

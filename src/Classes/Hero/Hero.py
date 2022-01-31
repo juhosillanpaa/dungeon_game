@@ -95,7 +95,6 @@ class Hero(MovingUnit):
         x = x + x_offset
         y = y + y_offset
         collision_distance, unit_dir_vec, pos = ray_cast((self.x, self.y), (x, y), max_length=1000, map=self.map)
-        print('collision_distance: ', collision_distance)
         bullet = Bullet(self.x, self.y, unit_dir_vec, collision_distance)
         self.bullets.append(bullet)
 

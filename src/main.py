@@ -1,10 +1,10 @@
 import pygame
+import numpy as np
 import pygame_gui
-from Classes.Hero.Hero import Hero
-from Classes.Cockroach.Cockroach import Cockroach
+
 from Classes.Game.Game import Game
-from Classes.Map.Map import Map
-from Classes.Map.create_map import test_perlin_map
+
+
 WHITE = (255, 255, 255)
 FPS = 60
 GREY = pygame.Color(200, 200, 200)
@@ -12,8 +12,8 @@ DARK = pygame.Color(50,50,50)
 
 
 
-
 def main():
+
 
     pygame.init()
     pygame.display.set_caption("Tower defense")
@@ -21,17 +21,11 @@ def main():
 
     clock = pygame.time.Clock()
     run = True
-    map = Map(game_surface=window, tile_size = 100)
-
-    hero = Hero(map=map)
-    hero.set_position(300,300)
-    cockroach = Cockroach(map=map)
-    cockroach.set_position(500,500)
 
 
 
-    game = Game(hero=hero, game_surface=window, map=map)
-    game.add_roach(cockroach)
+    game = Game(game_surface=window)
+
 
 
 

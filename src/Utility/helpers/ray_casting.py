@@ -13,7 +13,7 @@ def get_unit_direction_vec(pos1, pos2):
 
 def ray_cast(start_pos, dir_pos, max_length, map):
     positions = []
-    start_rect = map.get_tile(start_pos[0], start_pos[1]).get_rect()
+    start_rect = map.get_tile_rect(x=start_pos[0], y=start_pos[1])
     unit_dir_vec = get_unit_direction_vec(start_pos, dir_pos)
 
     x_off = 0 if unit_dir_vec[0] >= 0 else -1
@@ -60,8 +60,8 @@ def ray_cast(start_pos, dir_pos, max_length, map):
             current_pos = (start_pos[0] + unit_dir_vec[0] * c_y, start_pos[1] + unit_dir_vec[1] * c_y)
             positions.append((current_pos[0], current_pos[1], 2))
             mod_y = s / unit_dir_vec[1]
-        tile = map.get_tile(current_pos[0] + x_off, current_pos[1] + y_off)
-        if tile.does_tile_collide_objects():
+        test_x, test_y = current_pos[0] + x_off, current_pos[1] + y_off
+        if map.check_tile_for_collision(x=test_x, y=test_y):
             c_l = length(current_pos[0] + x_off - start_pos[0], current_pos[1]+y_off - start_pos[1])
             return c_l, unit_dir_vec, positions
 

@@ -2,9 +2,98 @@ import numpy as np
 import pandas as pd
 from ..Map.WallTile import WallTile
 from ..Map.FloorTile import FloorTile
-
+import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 from perlin_noise import PerlinNoise
+
+from opensimplex import OpenSimplex
+from src.Utility.helpers.perlin_noise import PerlinNoiseGenerator
+
+
+FEATURE_SIZE = 120
+
+def get_simplex_noise(x0, y0, x1, y1, tile_size):
+    tmp = OpenSimplex(seed=2)
+
+    tile_map = []
+    bit_map = []
+    for x in range(x0, x1):
+        row = []
+        bit_row = []
+        for y in range(y0, y1):
+            n = tmp.noise2d(x=x / FEATURE_SIZE, y=y / FEATURE_SIZE)
+            bit_row.append(n)
+            if -0.3 < n < 0.3:
+                row.append(FloorTile(x=x * tile_size, y=y * tile_size, size=tile_size))
+            else:
+                row.append(WallTile(x=x * tile_size, y=y * tile_size, size=tile_size))
+        tile_map.append(row)
+        bit_map.append(bit_row)
+
+    plt.imshow(bit_map, cmap='gray')
+    plt.show()
+
+    numpy_arr = np.asarray(tile_map)
+    return numpy_arr
+
+
+
+
+
+def test_simplex(size=50, tile_size = 128):
+
+    tile_map = []
+    bit_map = []
+
+    for i in range(size):
+        row = []
+        bit_row = []
+        for j in range(size):
+            n = tmp.noise2d(x=i/FEATURE_SIZE, y=j/FEATURE_SIZE)
+            bit_row.append(n)
+            if i == 0 or j == 0 or i == size - 1 or j == size - 1:
+                row.append(WallTile(x=i * tile_size, y=j * tile_size, size=tile_size))
+
+            elif -0.3 < n < 0.3:
+                row.append(FloorTile(x=i * tile_size, y=j * tile_size, size=tile_size))
+            else:
+                row.append(WallTile(x=i * tile_size, y=j * tile_size, size=tile_size))
+        tile_map.append(row)
+        bit_map.append(bit_row)
+
+    plt.imshow(bit_map, cmap='gray')
+    plt.show()
+    return tile_map
+
+
+
+
+
+def test_own_perlin_generator(size=50, tile_size = 128):
+    noise_generator = PerlinNoiseGenerator(2,6)
+    tile_map = []
+    bit_map = []
+    for i in range(size):
+        row = []
+        bit_row = []
+        for j in range(size):
+            noise = noise_generator(i / size, j / size)
+            bit_row.append(noise)
+            if i == 0 or j == 0 or i == size - 1 or j == size - 1:
+                row.append(WallTile(x=i * tile_size, y=j * tile_size, size=tile_size))
+
+            elif -0.15 < noise < 0.15:
+                row.append(FloorTile(x=i * tile_size, y=j * tile_size, size=tile_size))
+            else:
+                row.append(WallTile(x=i * tile_size, y=j * tile_size, size=tile_size))
+        tile_map.append(row)
+        bit_map.append(bit_row)
+
+    plt.imshow(bit_map, cmap='gray')
+    plt.show()
+    return tile_map
+
+
 
 
 
